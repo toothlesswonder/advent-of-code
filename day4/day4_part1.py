@@ -20,17 +20,13 @@ df.columns = ['date', 'event']
 
 ''' CLEAN '''
 
-'''
-Note: parsing the date gets an out of bounds datetime error! 32 bit integer 
-can't handle year 1518.  I should come back and learn to do a period index:
-http://pandas-docs.github.io/pandas-docs-travis/timeseries.html#representing-out-of-bounds-spans
-
-But for now I am going to be lazy.
-
-'''
-
 # being lazy
 df['date'] = [row.replace("[1518","2018") for row in df.date]
+
+''' Note: parsing the date gets an out of bounds datetime error! 32 bit integer 
+can't handle year 1518.  I should come back and learn to do a period index:
+http://pandas-docs.github.io/pandas-docs-travis/timeseries.html#representing-out-of-bounds-spans
+'''
 
 # parse times 
 df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d %H:%M')
@@ -84,7 +80,7 @@ print('Guard #%s has the most minutes' % (guard))
 
 
       
-''' STEP 2: find the minute of the day when Guard 1993 is asleep most often '''
+''' STEP 2: find the minute of the day when the guard is asleep most often '''
 
 # create new df with minutes of the day (1440 rows)
 df2 = pd.DataFrame(pd.date_range('2018-01-01', '2018-01-02', freq="1min")[:-1].time)
@@ -110,4 +106,5 @@ for item in df2.index[df2['count'] == max_count]:
     print(int(guard)*item.minute)
 
 
-''' Note: the second possible answer 73741 was right. Why am I getting two? '''
+''' Note: the second possible answer was right. Why am I getting two? '''
+
